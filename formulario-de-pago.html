@@ -15,18 +15,30 @@
     <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
     <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js"></script>
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-        }
-        .kr-embedded {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+<style type="text/css">
+/*choice the size*/  
+.kr-smart-form {
+  width: 33% !important;
+  }
+  
+  /*to choice the size of the embedded form*/
+.kr-smart-form .kr-embedded {
+  width: 100% !important;
+  }
+  
+/*to use the CSS Flexbox (Flexible Box)*/  
+ .kr-smart-form .kr-embedded .flex-container {
+  flex-direction: row !important;
+  display: flex;
+  }
+  
+/*tocenter the button*/
+  .kr-smart-form .kr-embedded .kr-payment-button {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100% !important;
+}
+</style>
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -56,6 +68,25 @@
     <div id="amount-display" style="text-align: center; margin: 20px; font-size: 18px;"></div>
 
     <!-- El div donde se carga el formulario de pago -->
-    <div class="kr-embedded" kr-payment-mode="INSTALMENTS, DEFERRED" kr-fields="email,dni"></div>
+        <div class="kr-smart-form" kr-card-form-expanded>
+      <div class="kr-embedded">
+        <div class="flex-container">
+          <div class="kr-pan">
+          </div>
+          <div class="kr-expiry">
+          </div>
+          <div class="kr-security-code">
+          </div>
+        </div>
+        <div class="flex-container">
+          <div class="kr-identity-document-type">
+          </div>
+          <div class="kr-identity-document-number">
+          </div>
+        </div>
+        <button class="kr-payment-button">
+        </button>
+      </div>
+    </div>
 </body>
 </html>
