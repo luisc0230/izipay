@@ -46,23 +46,6 @@
         const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
-
-      // Agregar el listener para capturar datos del formulario y enviarlos de vuelta a Flutter
-      document.querySelector('.kr-payment-button').addEventListener('click', function() {
-        const email = document.querySelector('.kr-card-holder-mail').value;
-        const firstName = document.querySelector('.kr-card-holder-name').value;
-        const lastName = document.querySelector('.kr-card-holder-lastname').value;
-        const phoneNumber = document.querySelector('.kr-phone-number').value;
-
-        // Enviar los datos al canal de Flutter
-        SendToken.postMessage(JSON.stringify({
-          token: formToken,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          phoneNumber: phoneNumber
-        }));
-      });
     });
   </script>
 
@@ -73,7 +56,32 @@
 
   <!-- El div donde se carga el formulario de pago -->
   <div class="kr-smart-form">
-    <div class="kr-embedded"></div>
+    <div class="kr-embedded">
+      <!-- Tarjeta de crédito -->
+      <div class="kr-pan"></div> <!-- Número de tarjeta -->
+      <div class="kr-expiry"></div> <!-- Fecha de expiración -->
+      <div class="kr-security-code"></div> <!-- CVV -->
+
+      <!-- Información del titular -->
+      <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
+      <div class="kr-card-holder-mail"></div> <!-- Correo electrónico del titular -->
+
+      <!-- Documento de identidad -->
+      <div class="kr-identity-document-type"></div> <!-- Tipo de documento -->
+      <div class="kr-identity-document-number"></div> <!-- Número de documento -->
+
+      <!-- Información de facturación -->
+      <div class="kr-first-name"></div> <!-- Primer nombre -->
+      <div class="kr-last-name"></div> <!-- Apellido -->
+      <div class="kr-street"></div> <!-- Dirección -->
+      <div class="kr-city"></div> <!-- Ciudad -->
+      <div class="kr-state"></div> <!-- Estado -->
+      <div class="kr-country"></div> <!-- País -->
+      <div class="kr-postal-code"></div> <!-- Código postal -->
+      <div class="kr-phone-number"></div> <!-- Teléfono -->
+    </div>
+
+    <button class="kr-payment-button">REGISTRAR TARJETA</button>
   </div>
 </body>
 </html>
