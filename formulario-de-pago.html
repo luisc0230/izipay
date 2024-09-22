@@ -29,63 +29,6 @@
     </style>
 
     <script>
-      // Configuración de los campos de pago
-      const iziConfig = {
-        config: {
-          appearance: {
-            customize: {
-              elements: [
-                {
-                  paymentMethod: 'CARD',
-                  fields: [
-                    {
-                      name: 'firstName',
-                      visible: true, // Mostrar el campo nombre
-                    },
-                    {
-                      name: 'lastName',
-                      visible: true, // Mostrar el campo apellido
-                    },
-                    {
-                      name: 'cardNumber',
-                      visible: true, // El número de tarjeta siempre visible
-                    },
-                    {
-                      name: 'expirationDate',
-                      visible: true, // Fecha de vencimiento siempre visible
-                    },
-                    {
-                      name: 'securityCode',
-                      visible: true, // Código de seguridad siempre visible
-                    },
-                    {
-                      name: 'typeDocument',
-                      visible: true, // Mostrar el campo tipo de documento
-                    },
-                    {
-                      name: 'documentNumber',
-                      visible: true, // Mostrar el campo número de documento
-                    },
-                    {
-                      name: 'email',
-                      visible: true, // Mostrar el campo email
-                    },
-                    {
-                      name: 'installments',
-                      visible: true, // Mostrar el campo de cuotas (pago diferido)
-                    },
-                    {
-                      name: 'deferred',
-                      visible: true, // Mostrar el campo de pago diferido
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      };
-
       document.addEventListener('DOMContentLoaded', function() {
         // Obtener los parámetros de la URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -104,17 +47,6 @@
             const formattedAmount = (amount / 100).toFixed(2).replace('.', ','); // Formatear a 15,00
             document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
         }
-
-        // Inicializar el formulario de pago con el objeto iziConfig
-        const checkout = new Izipay({ config: iziConfig });
-        try {
-          checkout.LoadForm({
-            authorization: '22083729:testpublickey_KzkMgtLWFLrBUuR7p2O3dZiMRvjQG41bFeqLRYa24ShTC', // Coloca aquí tu token de sesión
-            keyRSA: 'uJxd9WMmRrGugInc6AfKbCSSTr3tj0onBvMMoRh1EGf19' // Coloca aquí tu clave RSA
-          });
-        } catch (error) {
-          console.log(error.message, error.Errors, error.date);
-        }
       });
     </script>
 
@@ -125,7 +57,25 @@
 
     <!-- El div donde se carga el formulario de pago -->
     <div class="kr-smart-form" kr-card-form-expanded>
-      <div class="kr-embedded"></div>
+        <div class="kr-embedded">
+            <div class="kr-pan"></div> <!-- Campo de número de tarjeta -->
+            <div class="kr-expiry"></div> <!-- Campo de fecha de expiración -->
+            <div class="kr-security-code"></div> <!-- Campo de código de seguridad -->
+
+            <!-- Información adicional del titular -->
+            <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
+            <div class="kr-card-holder-mail"></div> <!-- Email del titular -->
+
+            <!-- Documentos de identidad -->
+            <div class="kr-identity-document-type"></div> <!-- Tipo de documento de identidad -->
+            <div class="kr-identity-document-number"></div> <!-- Número del documento de identidad -->
+
+            <!-- Información de pago diferido o en cuotas -->
+            <div class="kr-first-installment-delay"></div> <!-- Meses de diferido para la primera cuota -->
+            <div class="kr-installment-number"></div> <!-- Número de cuotas -->
+        </div>
+
+        <button class="kr-payment-button">Pagar</button>
     </div>
 </body>
 </html>
