@@ -26,15 +26,6 @@
       height: 100%;
       width: 100%;
     }
-    /* Flexbox para agrupar la fecha de expiración y el CVV */
-    .flex-container {
-      display: flex;
-      justify-content: space-between;
-    }
-    .flex-item {
-      flex: 1;
-      margin: 5px;
-    }
   </style>
 
   <script>
@@ -55,6 +46,23 @@
         const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
+
+      // Función para capturar los datos del formulario cuando el usuario hace clic en pagar
+      KR.onFormReady(function() {
+        // Escuchar el evento de envío de pago de Izipay
+        document.querySelector('.kr-payment-button').addEventListener('click', function() {
+          // Capturar los valores del formulario
+          const customerData = {
+            email: document.querySelector('.kr-card-holder-mail input').value,
+            firstName: document.querySelector('.kr-card-holder-name input').value,
+            lastName: document.querySelector('.kr-identity-document-type input').value,
+            phoneNumber: document.querySelector('.kr-phone-number input').value
+          };
+
+          // Enviar los detalles del cliente al canal JavaScript de Flutter
+          CustomerDetails.postMessage(JSON.stringify(customerData));
+        });
+      });
     });
   </script>
 
@@ -68,16 +76,8 @@
     <div class="kr-embedded">
       <!-- Tarjeta de crédito -->
       <div class="kr-pan"></div> <!-- Número de tarjeta -->
-      
-      <!-- Agrupar fecha de expiración y CVV en una fila -->
-      <div class="flex-container">
-        <div class="flex-item">
-          <div class="kr-expiry"></div> <!-- Fecha de expiración -->
-        </div>
-        <div class="flex-item">
-          <div class="kr-security-code"></div> <!-- CVV -->
-        </div>
-      </div>
+      <div class="kr-expiry"></div> <!-- Fecha de expiración -->
+      <div class="kr-security-code"></div> <!-- CVV -->
 
       <!-- Información del titular -->
       <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
@@ -90,8 +90,6 @@
       <!-- Información de facturación -->
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
-
-    <button class="kr-payment-button">PAGAR</button>
   </div>
 </body>
 </html>
