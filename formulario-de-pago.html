@@ -11,7 +11,7 @@
             kr-post-url-cancel="https://tu-url-de-cancelacion.com"
             kr-language="es-ES">
     </script>
-PRUEBAAA
+
     <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
     <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js"></script>
 
@@ -42,9 +42,10 @@ PRUEBAAA
             document.querySelector('.kr-embedded').setAttribute('kr-form-token', formToken);
         }
 
-        // Mostrar el monto y la moneda (opcional)
+        // Mostrar el monto formateado y la moneda
         if (amount && currency) {
-            document.getElementById('amount-display').innerText = `Monto: ${amount} ${currency}`;
+            const formattedAmount = (amount / 100).toFixed(2).replace('.', ','); // Formatear a 15,00
+            document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
         }
       });
     </script>
