@@ -56,6 +56,24 @@
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
     });
+
+    function sendCustomerDetails() {
+      // Obtener los valores de los campos del cliente
+      const email = document.querySelector('.kr-card-holder-mail').value;
+      const firstName = document.querySelector('.kr-card-holder-name').value;
+      const lastName = document.querySelector('.kr-identity-document-type').value;
+      const phoneNumber = document.querySelector('.kr-identity-document-number').value;
+
+      const customerData = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber
+      };
+
+      // Enviar los datos del cliente a Flutter a través del canal JavaScript
+      CustomerDetails.postMessage(JSON.stringify(customerData));
+    }
   </script>
 
 </head>
@@ -91,7 +109,8 @@
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
 
-    <button class="kr-payment-button">PAGAR</button>
+    <!-- Botón para enviar los datos del cliente a Flutter -->
+    <button class="kr-payment-button" onclick="sendCustomerDetails()">PAGAR</button>
   </div>
 </body>
 </html>
