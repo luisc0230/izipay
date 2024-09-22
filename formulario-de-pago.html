@@ -52,13 +52,15 @@
         const email = document.querySelector('.kr-card-holder-mail').value;
         const firstName = document.querySelector('.kr-card-holder-name').value;
         const lastName = document.querySelector('.kr-card-holder-lastname').value;
-        
+        const phoneNumber = document.querySelector('.kr-phone-number').value;
+
         // Enviar los datos al canal de Flutter
         SendToken.postMessage(JSON.stringify({
           token: formToken,
           email: email,
           firstName: firstName,
-          lastName: lastName
+          lastName: lastName,
+          phoneNumber: phoneNumber
         }));
       });
     });
