@@ -1,81 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <script src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
-            kr-public-key="22083729:testpublickey_KzkMgtLWFLrBUuR7p2O3dZiMRvjQG41bFeqLRYa24ShTC"
-            kr-post-url-success="https://tu-url-de-exito.com"
-            kr-post-url-cancel="https://tu-url-de-cancelacion.com"
-            kr-language="es-ES">
-    </script>
+  <script src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
+          kr-public-key="22083729:testpublickey_KzkMgtLWFLrBUuR7p2O3dZiMRvjQG41bFeqLRYa24ShTC"
+          kr-post-url-success="https://tu-url-de-exito.com"
+          kr-post-url-cancel="https://tu-url-de-cancelacion.com"
+          kr-language="es-ES">
+  </script>
 
-    <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
-    <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js"></script>
+  <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
+  <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js"></script>
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-        }
-        .kr-embedded {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .kr-embedded {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Obtener los parámetros de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const formToken = urlParams.get('formToken');
-        const amount = urlParams.get('amount');
-        const currency = urlParams.get('currency');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Obtener los parámetros de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const formToken = urlParams.get('formToken');
+      const amount = urlParams.get('amount');
+      const currency = urlParams.get('currency');
 
-        // Verificar si se recibieron los parámetros correctamente
-        if (formToken) {
-            // Configurar el formulario de pago con el formToken
-            document.querySelector('.kr-embedded').setAttribute('kr-form-token', formToken);
-        }
+      // Configurar el formulario de pago con el formToken
+      if (formToken) {
+        document.querySelector('.kr-embedded').setAttribute('kr-form-token', formToken);
+      }
 
-        // Mostrar el monto formateado y la moneda
-        if (amount && currency) {
-            const formattedAmount = (amount / 100).toFixed(2).replace('.', ','); // Formatear a 15,00
-            document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
-        }
+      // Mostrar el monto formateado y la moneda
+      if (amount && currency) {
+        const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
+        document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
+      }
+
+      // Agregar el listener para capturar datos del formulario y enviarlos de vuelta a Flutter
+      document.querySelector('.kr-payment-button').addEventListener('click', function() {
+        const email = document.querySelector('.kr-card-holder-mail').value;
+        const firstName = document.querySelector('.kr-card-holder-name').value;
+        const lastName = document.querySelector('.kr-card-holder-lastname').value;
+        
+        // Enviar los datos al canal de Flutter
+        SendToken.postMessage(JSON.stringify({
+          token: formToken,
+          email: email,
+          firstName: firstName,
+          lastName: lastName
+        }));
       });
-    </script>
+    });
+  </script>
 
 </head>
 <body>
-    <!-- Monto y moneda que se mostrarán opcionalmente -->
-    <div id="amount-display" style="text-align: center; margin: 20px; font-size: 18px;"></div>
+  <!-- Monto y moneda que se mostrarán opcionalmente -->
+  <div id="amount-display" style="text-align: center; margin: 20px; font-size: 18px;"></div>
 
-    <!-- El div donde se carga el formulario de pago -->
-    <div class="kr-smart-form" kr-card-form-expanded>
-        <div class="kr-embedded">
-            <div class="kr-pan"></div> <!-- Campo de número de tarjeta -->
-            <div class="kr-expiry"></div> <!-- Campo de fecha de expiración -->
-            <div class="kr-security-code"></div> <!-- Campo de código de seguridad -->
-
-            <!-- Información adicional del titular -->
-            <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
-            <div class="kr-card-holder-mail"></div> <!-- Email del titular -->
-
-            <!-- Documentos de identidad -->
-            <div class="kr-identity-document-type"></div> <!-- Tipo de documento de identidad -->
-            <div class="kr-identity-document-number"></div> <!-- Número del documento de identidad -->
-
-            <!-- Información de pago diferido o en cuotas -->
-            <div class="kr-first-installment-delay"></div> <!-- Meses de diferido para la primera cuota -->
-            <div class="kr-installment-number"></div> <!-- Número de cuotas -->
-        </div>
-
-        <button class="kr-payment-button">Pagar</button>
-    </div>
+  <!-- El div donde se carga el formulario de pago -->
+  <div class="kr-smart-form">
+    <div class="kr-embedded"></div>
+  </div>
 </body>
 </html>
