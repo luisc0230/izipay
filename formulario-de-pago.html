@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scaleable=no" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -25,9 +25,8 @@
       background-color: #f7f7f7;
     }
 
-    /* Flexbox para alinear horizontalmente */
     .kr-smart-form {
-      width: 33%; /* Tamaño del formulario */
+      width: 33%; 
       margin: 50px auto;
       background-color: #fff;
       padding: 20px;
@@ -41,18 +40,11 @@
       gap: 15px;
     }
 
-    .flex-container {
-      display: flex;
-      gap: 15px;
-    }
-
-    /* Alinear elementos en modo compacto */
     .compact-row {
       display: flex;
       justify-content: space-between;
     }
 
-    /* Ocultar el pago diferido */
     .kr-payment-button {
       background-color: #00c853;
       color: white;
@@ -69,7 +61,6 @@
       background-color: #00a841;
     }
 
-    /* Estilos para que el formulario luzca más limpio */
     .kr-pan, .kr-expiry, .kr-security-code, .kr-card-holder-name, .kr-card-holder-mail, .kr-identity-document-type, .kr-identity-document-number, .kr-phone-number {
       background-color: #f0f0f0;
       padding: 10px;
@@ -77,82 +68,67 @@
       border: 1px solid #ccc;
       font-size: 14px;
     }
-
-    /* Ocultar campos de pago diferido */
-    .kr-payment-button {
-      margin-top: 20px;
-    }
-
   </style>
 
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-      // Obtener los parámetros de la URL
       const urlParams = new URLSearchParams(window.location.search);
       const formToken = urlParams.get('formToken');
       const amount = urlParams.get('amount');
       const currency = urlParams.get('currency');
 
-      // Configurar el formulario de pago con el formToken
       if (formToken) {
         document.querySelector('.kr-embedded').setAttribute('kr-form-token', formToken);
       }
 
-      // Mostrar el monto formateado y la moneda
       if (amount && currency) {
         const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
 
-      // Configuración del modo compacto
       KR.onFormReady(function () {
         KR.setFormConfig({
-          cardForm: { layout: 'compact' },  // Diseño compacto para la tarjeta
-          smartForm: { layout: 'compact' }, // Diseño compacto general
+          cardForm: { layout: 'compact' },
+          smartForm: { layout: 'compact' },
         });
       });
 
-      // Enviar los datos del cliente al canal JavaScript
-      const customerData = {
-        email: document.querySelector('.kr-card-holder-mail').value,
-        firstName: document.querySelector('.kr-card-holder-name').value,
-        lastName: document.querySelector('.kr-identity-document-type').value,
-        phoneNumber: document.querySelector('.kr-identity-document-number').value
-      };
-      SendCustomerData.postMessage(JSON.stringify(customerData)); // Enviar al canal en Flutter
+      document.querySelector('.kr-payment-button').addEventListener('click', function() {
+        const customerData = {
+          email: document.querySelector('.kr-card-holder-mail input').value,
+          firstName: document.querySelector('.kr-card-holder-name input').value,
+          lastName: document.querySelector('.kr-identity-document-type input').value,
+          phoneNumber: document.querySelector('.kr-phone-number input').value
+        };
+        CustomerDetails.postMessage(JSON.stringify(customerData));
+      });
     });
   </script>
 
 </head>
 <body>
-  <!-- Monto y moneda que se mostrarán opcionalmente -->
   <div id="amount-display" style="text-align: center; margin: 20px; font-size: 18px; font-weight: bold;"></div>
 
-  <!-- El div donde se carga el formulario de pago -->
   <div class="kr-smart-form">
     <div class="kr-embedded">
-      <!-- Tarjeta de crédito -->
-      <div class="kr-pan"></div> <!-- Número de tarjeta -->
+      <div class="kr-pan"></div>
       <div class="compact-row">
-        <div class="kr-expiry"></div> <!-- Fecha de expiración -->
-        <div class="kr-security-code"></div> <!-- CVV -->
+        <div class="kr-expiry"></div>
+        <div class="kr-security-code"></div>
       </div>
 
-      <!-- Información del titular -->
-      <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
-      <div class="kr-card-holder-mail"></div> <!-- Correo electrónico del titular -->
+      <div class="kr-card-holder-name"></div>
+      <div class="kr-card-holder-mail"></div>
 
-      <!-- Documento de identidad -->
       <div class="compact-row">
-        <div class="kr-identity-document-type"></div> <!-- Tipo de documento -->
-        <div class="kr-identity-document-number"></div> <!-- Número de documento -->
+        <div class="kr-identity-document-type"></div>
+        <div class="kr-identity-document-number"></div>
       </div>
 
-      <!-- Información de facturación -->
-      <div class="kr-phone-number"></div> <!-- Teléfono -->
+      <div class="kr-phone-number"></div>
     </div>
 
-    <button class="kr-payment-button">REGISTRAR TARJETA</button>
+    <button class="kr-payment-button">PAGAR</button>
   </div>
 </body>
 </html>
