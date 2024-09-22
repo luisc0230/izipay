@@ -5,12 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <script src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
-            kr-public-key="22083729:testpublickey_KzkMgtLWFLrBUuR7p2O3dZiMRvjQG41bFeqLRYa24ShTC"
-            kr-post-url-success="https://tu-url-de-exito.com"
-            kr-post-url-cancel="https://tu-url-de-cancelacion.com"
-            kr-language="es-ES">
-    </script>
+    <!-- Incluir el script de Izipay -->
+    <script src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"></script>
 
     <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
     <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js"></script>
@@ -29,33 +25,73 @@
     </style>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Obtener los parámetros de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const formToken = urlParams.get('formToken');
-        const amount = urlParams.get('amount');
-        const currency = urlParams.get('currency');
+        // Configuración del formulario con soporte para cuotas y pagos diferidos
+        const iziConfig = {
+            config: {
+                appearance: {
+                    customize: {
+                        elements: [
+                            {
+                                paymentMethod: 'CARD',
+                                fields: [
+                                    {
+                                        name: 'firstName',
+                                        order: 1
+                                    },
+                                    {
+                                        name: 'lastName',
+                                        order: 1
+                                    },
+                                    {
+                                        name: 'cardNumber',
+                                        order: 2
+                                    },
+                                    {
+                                        name: 'expirationDate',
+                                        order: 3
+                                    },
+                                    {
+                                        name: 'securityCode',
+                                        order: 3
+                                    },
+                                    {
+                                        name: 'email',
+                                        order: 4
+                                    },
+                                    {
+                                        name: 'installments', // Campo para cuotas
+                                        order: 5
+                                    },
+                                    {
+                                        name: 'deferredPayment', // Campo para pago diferido
+                                        order: 6
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                render: {
+                    typeForm: 'pop-up' // Cambia a 'embedded' si prefieres que esté incrustado
+                }
+            }
+        };
 
-        // Verificar si se recibieron los parámetros correctamente
-        if (formToken) {
-            // Configurar el formulario de pago con el formToken
-            document.querySelector('.kr-embedded').setAttribute('kr-form-token', formToken);
-        }
+        // Inicializar Izipay y cargar el formulario
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkout = new Izipay({ config: iziConfig });
 
-        // Mostrar el monto formateado y la moneda
-        if (amount && currency) {
-            const formattedAmount = (amount / 100).toFixed(2).replace('.', ','); // Formatear a 15,00
-            document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
-        }
-      });
+            checkout &&
+                checkout.LoadForm({
+                    authorization: '22083729:testpassword_LQhG5FVzdq9slMrMXtzMIhfxYiLcA3A54D6thPkE5U4U3', // Tu token de sesión
+                    keyRSA: '22083729:testpublickey_KzkMgtLWFLrBUuR7p2O3dZiMRvjQG41bFeqLRYa24ShTC' // Tu clave RSA
+                });
+        });
     </script>
-
 </head>
-<body>
-    <!-- Monto y moneda que se mostrarán opcionalmente -->
-    <div id="amount-display" style="text-align: center; margin: 20px; font-size: 18px;"></div>
 
-    <!-- El div donde se carga el formulario de pago -->
-    <div class="kr-embedded" kr-payment-mode="INSTALMENTS, DEFERRED"></div>
+<body>
+    <!-- Div donde se cargará el formulario pop-up o incrustado -->
+    <div class="kr-embedded"></div>
 </body>
 </html>
