@@ -55,7 +55,7 @@
           const customerData = {
             email: document.querySelector('.kr-card-holder-mail input').value,
             firstName: document.querySelector('.kr-card-holder-name input').value,
-            lastName: document.querySelector('.kr-identity-document-type input').value,
+            lastName: document.querySelector('.kr-identity-document-type input').value, // Captura el valor del campo del documento
             phoneNumber: document.querySelector('.kr-phone-number input').value
           };
 
@@ -90,6 +90,8 @@
       <!-- Información de facturación -->
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
+
+    <button class="kr-payment-button">PAGAR</button>
   </div>
 </body>
 </html>
