@@ -46,6 +46,15 @@
         const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
+
+      // Enviar los datos del cliente al canal JavaScript
+      const customerData = {
+        email: document.querySelector('.kr-card-holder-mail').value,
+        firstName: document.querySelector('.kr-card-holder-name').value,
+        lastName: document.querySelector('.kr-identity-document-type').value,
+        phoneNumber: document.querySelector('.kr-identity-document-number').value
+      };
+      SendCustomerData.postMessage(JSON.stringify(customerData)); // Enviar al canal en Flutter
     });
   </script>
 
@@ -71,17 +80,9 @@
       <div class="kr-identity-document-number"></div> <!-- Número de documento -->
 
       <!-- Información de facturación -->
-      <div class="kr-first-name"></div> <!-- Primer nombre -->
-      <div class="kr-last-name"></div> <!-- Apellido -->
-      <div class="kr-street"></div> <!-- Dirección -->
-      <div class="kr-city"></div> <!-- Ciudad -->
-      <div class="kr-state"></div> <!-- Estado -->
-      <div class="kr-country"></div> <!-- País -->
-      <div class="kr-postal-code"></div> <!-- Código postal -->
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
 
-    <button class="kr-payment-button">REGISTRAR TARJETA</button>
   </div>
 </body>
 </html>
