@@ -44,25 +44,17 @@
       // Mostrar el monto formateado y la moneda
       if (amount && currency) {
         const formattedAmount = (amount / 100).toFixed(2).replace('.', ',');
-        document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
+        document.getElementById('amount-display').innerText = Monto: ${formattedAmount} ${currency};
       }
 
-      // Función para capturar los datos cuando el formulario esté listo
-      KR.onFormReady(function() {
-        // Escuchar el evento de envío de pago de Izipay
-        document.querySelector('.kr-payment-button').addEventListener('click', function() {
-          // Capturar los valores del formulario
-          const customerData = {
-            email: document.querySelector('.kr-card-holder-mail input').value,
-            firstName: document.querySelector('.kr-card-holder-name input').value,
-            lastName: document.querySelector('.kr-identity-document-type input').value,
-            phoneNumber: document.querySelector('.kr-phone-number input').value
-          };
-
-          // Enviar los detalles del cliente al canal JavaScript de Flutter
-          CustomerDetails.postMessage(JSON.stringify(customerData));
-        });
-      });
+      // Enviar los datos del cliente al canal JavaScript
+      const customerData = {
+        email: document.querySelector('.kr-card-holder-mail').value,
+        firstName: document.querySelector('.kr-card-holder-name').value,
+        lastName: document.querySelector('.kr-identity-document-type').value,
+        phoneNumber: document.querySelector('.kr-identity-document-number').value
+      };
+      SendCustomerData.postMessage(JSON.stringify(customerData)); // Enviar al canal en Flutter
     });
   </script>
 
@@ -90,6 +82,7 @@
       <!-- Información de facturación -->
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
+
   </div>
 </body>
 </html>
