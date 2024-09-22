@@ -26,15 +26,6 @@
       height: 100%;
       width: 100%;
     }
-    /* Flexbox para agrupar la fecha de expiración y el CVV */
-    .flex-container {
-      display: flex;
-      justify-content: space-between;
-    }
-    .flex-item {
-      flex: 1;
-      margin: 5px;
-    }
   </style>
 
   <script>
@@ -56,26 +47,7 @@
         document.getElementById('amount-display').innerText = `Monto: ${formattedAmount} ${currency}`;
       }
     });
-
-    function sendCustomerDetails() {
-      // Obtener los valores de los campos del cliente
-      const email = document.querySelector('.kr-card-holder-mail').value;
-      const firstName = document.querySelector('.kr-card-holder-name').value;
-      const lastName = document.querySelector('.kr-identity-document-type').value;
-      const phoneNumber = document.querySelector('.kr-identity-document-number').value;
-
-      const customerData = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber
-      };
-
-      // Enviar los datos del cliente a Flutter a través del canal JavaScript
-      CustomerDetails.postMessage(JSON.stringify(customerData));
-    }
   </script>
-
 </head>
 <body>
   <!-- Monto y moneda que se mostrarán opcionalmente -->
@@ -86,16 +58,8 @@
     <div class="kr-embedded">
       <!-- Tarjeta de crédito -->
       <div class="kr-pan"></div> <!-- Número de tarjeta -->
-      
-      <!-- Agrupar fecha de expiración y CVV en una fila -->
-      <div class="flex-container">
-        <div class="flex-item">
-          <div class="kr-expiry"></div> <!-- Fecha de expiración -->
-        </div>
-        <div class="flex-item">
-          <div class="kr-security-code"></div> <!-- CVV -->
-        </div>
-      </div>
+      <div class="kr-expiry"></div> <!-- Fecha de expiración -->
+      <div class="kr-security-code"></div> <!-- CVV -->
 
       <!-- Información del titular -->
       <div class="kr-card-holder-name"></div> <!-- Nombre del titular -->
@@ -108,9 +72,6 @@
       <!-- Información de facturación -->
       <div class="kr-phone-number"></div> <!-- Teléfono -->
     </div>
-
-    <!-- Botón para enviar los datos del cliente a Flutter -->
-    <button class="kr-payment-button" onclick="sendCustomerDetails()">PAGAR</button>
   </div>
 </body>
 </html>
